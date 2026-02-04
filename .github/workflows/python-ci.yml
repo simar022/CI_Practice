@@ -1,0 +1,43 @@
+name: Python CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # pip install -r requirements.txt (uncomment if you have dependencies)
+
+    - name: Run tests
+      run: python test_app.py
+
+#   deploy:
+#     needs: test # Only runs if the 'test' job passes
+#     runs-on: ubuntu-latest
+#     i: github.ref == 'refs/heads/main'
+
+#     steps:
+#     - name: Deploy to Server via SSH
+#       uses: appleboy/ssh-action@master(https://github.com)
+#       with:
+#         host: {{ secrets.HOST }}
+#         username: {{ secrets.USERNAME }}
+#         key: {{ secrets.PRIVATE_KEY }}
+#         script: |
+#           cd /path/to/your/app
+#           git pull origin main
+#           # Restart your python service here (e.g., systemctl restart myapp)
